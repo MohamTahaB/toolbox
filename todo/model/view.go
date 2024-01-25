@@ -8,8 +8,7 @@ import (
 // View function.
 func (m Model) View() string {
 	var b strings.Builder
-	check := "✓"
-	cursor := "   >>>"
+	var check, cursor string
 
 	// Build the string.
 	fmt.Fprint(&b, "Your ToDo list...\n\n")
@@ -24,7 +23,7 @@ func (m Model) View() string {
 
 		// Configure the check.
 		if task.Done {
-			check = "✓"
+			check = SelectedStyle.Render("✓")
 		} else {
 			check = " "
 		}
