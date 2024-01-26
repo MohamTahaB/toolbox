@@ -8,6 +8,7 @@ type Model struct {
 
 // Task structure, consists of a title and a boolean that describes its state.
 type Task struct {
-	Title string
-	Done  bool
+	ID    string `json:"id"`
+	Title string `json:"title"`
+	Done  bool   `json:"done"`
 }
