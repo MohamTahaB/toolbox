@@ -1,7 +1,7 @@
 package model
 
 
-func AddTask(t *Task) error {
+func (t *Task) AddTask() error {
 
 	// Retrieve the model from the JSON file.
 	m, err := RetrieveModel()
