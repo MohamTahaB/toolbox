@@ -1,8 +1,7 @@
-package storage
+package model
 
-import "github.com/toolbox/todo/model"
 
-func (sf *StorageFile) AddTask(t *model.Task) error {
+func AddTask(t *Task) error {
 
 	// Retrieve the model from the JSON file.
 	m, err := RetrieveModel()
