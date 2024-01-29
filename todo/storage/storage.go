@@ -41,6 +41,8 @@ func InitiateStorage() (string, error) {
 
 // RetrieveModel serves as a call to get the content of the JSON file, that each transaction will do, similarly to a SQL migrate.
 func RetrieveModel() (*model.Model, error) {
+
+	// First, initiate the storage.
 	fileName, err := InitiateStorage()
 
 	// Check if there was an error initiating the storage.
@@ -63,4 +65,27 @@ func RetrieveModel() (*model.Model, error) {
 	}
 
 	return m, nil
+}
+
+// CommitModel commits a model instance to the storage JSON file.
+func CommitModel(m *model.Model) error {
+
+	// First, initiate the storage.
+	fileName, err := InitiateStorage()
+	if err != nil {
+		return err
+	}
+
+	// Marshal the model.
+	b, err := json.Marshal(m)
+	if err != nil {
+		return fmt.Errorf("error marshalling the file: %v", err)
+	}
+
+	// Write marshalled model in the storage JSON file.
+	if err = os.WriteFile(fileName, b, 0755); err != nil {
+		return fmt.Errorf("error writing to the file: %v", err)
+	}
+
+	return nil
 }
