@@ -12,38 +12,42 @@ import (
 
 // InitiateStorage checks for the JSON file, creates it if necessary.
 // Returns the JSON directory to be manipulated later by transactors, and an error if there are issues.
-func InitiateStorage() (string, error) {
+func InitiateStorage() (*StorageFile, error) {
 	usr, err := user.Current()
 	if err != nil {
-		return "", fmt.Errorf("error retrieving the current user: %v", err)
+		return nil, fmt.Errorf("error retrieving the current user: %v", err)
 	}
 
 	fileName := filepath.Join(usr.HomeDir, ".toolbox", ".todo", "storage.json")
 
 	// Check if the JSON file already exists.
 	if _, err := os.Stat(fileName); os.IsExist(err) {
-		return fileName, nil
+		return &StorageFile{
+			Path: fileName,
+		}, nil
 	}
 
 	// Create the dir if it does not exist.
 	if err = os.MkdirAll(filepath.Dir(fileName), 0755); err != nil {
-		return "", fmt.Errorf("error creating directory: %v", err)
+		return nil, fmt.Errorf("error creating directory: %v", err)
 	}
 
 	file, createErr := os.Create(fileName)
 	// Checks if there was an error when creating the JSON file.
 	if createErr != nil {
-		return "", fmt.Errorf("error creating file: %v", err)
+		return nil, fmt.Errorf("error creating file: %v", err)
 	}
 	defer file.Close()
-	return fileName, nil
+	return &StorageFile{
+		Path: fileName,
+	}, nil
 }
 
 // RetrieveModel serves as a call to get the content of the JSON file, that each transaction will do, similarly to a SQL migrate.
 func RetrieveModel() (*model.Model, error) {
 
 	// First, initiate the storage.
-	fileName, err := InitiateStorage()
+	storageFile, err := InitiateStorage()
 
 	// Check if there was an error initiating the storage.
 	if err != nil {
@@ -51,7 +55,7 @@ func RetrieveModel() (*model.Model, error) {
 	}
 
 	// Read the file.
-	b, err := os.ReadFile(fileName)
+	b, err := os.ReadFile(storageFile.GetPath())
 	// Check if reading the file went error free.
 	if err != nil {
 		return nil, fmt.Errorf("error reading the file: %v", err)
@@ -71,7 +75,7 @@ func RetrieveModel() (*model.Model, error) {
 func CommitModel(m *model.Model) error {
 
 	// First, initiate the storage.
-	fileName, err := InitiateStorage()
+	storageFile, err := InitiateStorage()
 	if err != nil {
 		return err
 	}
@@ -83,7 +87,7 @@ func CommitModel(m *model.Model) error {
 	}
 
 	// Write marshalled model in the storage JSON file.
-	if err = os.WriteFile(fileName, b, 0755); err != nil {
+	if err = os.WriteFile(storageFile.GetPath(), b, 0755); err != nil {
 		return fmt.Errorf("error writing to the file: %v", err)
 	}
 
