@@ -6,7 +6,6 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
-
 )
 
 // InitiateStorage checks for the JSON file, creates it if necessary.
@@ -34,6 +33,18 @@ func InitiateStorage() (string, error) {
 	if createErr != nil {
 		return "", fmt.Errorf("error creating file: %v", err)
 	}
+
+	// Add a model instance to the JSON file.
+	m := Model{
+		TasksList: []Task{},
+	}
+	b, err := json.Marshal(m)
+	if err != nil {
+		return "", fmt.Errorf("error adding a model instance to the file: %v", err)
+	}
+	if _, err = file.Write(b); err != nil {
+		return "", fmt.Errorf("error adding a model instance to the file: %v", err)
+	}
 	defer file.Close()
 	return fileName, nil
 }
@@ -57,7 +68,7 @@ func RetrieveModel() (*Model, error) {
 	}
 
 	// Initiate a ptr to the model.
-	var m *Model
+	var m *Model = &Model{}
 	// Unmarshal the byte slice.
 	if err = json.Unmarshal(b, m); err != nil {
 		return nil, fmt.Errorf("error unmarshalling the file: %v", err)

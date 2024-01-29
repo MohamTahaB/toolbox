@@ -2,7 +2,7 @@ package model
 
 // Model structure, consists of a list of all tasks, and the index of the selected one.
 type Model struct {
-	TasksList []Task `json:"taskList"`
+	TasksList []Task `json:"tasksList"`
 	Selected  int    `json:"selected"`
 }
 
