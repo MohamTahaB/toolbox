@@ -23,7 +23,7 @@ func InitiateStorage() (string, error) {
 		return fileName, nil
 	}
 
-	// Create the dir when it does not exist.
+	// Create the dir if it does not exist.
 	if err = os.MkdirAll(filepath.Dir(fileName), 0755); err != nil {
 		return "", fmt.Errorf("error creating directory: %v", err)
 	}
