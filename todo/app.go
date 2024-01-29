@@ -9,21 +9,10 @@ import (
 )
 
 func App() {
-	m := model.Model{
-		TasksList: []model.Task{
-			{
-				Title: "Make the laundry",
-				Done:  false,
-			},
-			{
-				Title: "Wash the dishes",
-				Done:  false,
-			},
-			{
-				Title: "Tidy the room",
-				Done:  false,
-			},
-		},
+	m, err := model.RetrieveModel()
+	if err != nil {
+		fmt.Printf("there has been an error: %v", err)
+		os.Exit(1)
 	}
 	p := tea.NewProgram(m)
 	if _, err := p.Run(); err != nil {
