@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 )
 
-// InitiateStorage checks for the JSON file, creates it if necessary.
+// InitiateStorage checks for the JSON storage file, creates it if necessary.
 // Returns the JSON directory to be manipulated later by transactors, and an error if there are issues.
 func InitiateStorage() (string, error) {
 	usr, err := user.Current()

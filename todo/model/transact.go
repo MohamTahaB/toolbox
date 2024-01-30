@@ -1,6 +1,6 @@
 package model
 
-
+// Transactor to add a task to storage.
 func (t *Task) AddTask() error {
 
 	// Retrieve the model from the JSON file.
