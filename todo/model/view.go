@@ -14,13 +14,13 @@ func (m Model) View() string {
 
 	// Build the string.
 	fmt.Fprint(&b, "Your ToDo list...\n\n")
-	for index, task := range m.TasksList {
+	for index, task := range m.ListInfo.TasksList {
 
 		// Configure task style.
 		taskStyle := lipgloss.NewStyle()
 
 		// Configure the cursor.
-		if index == m.Selected {
+		if index == m.ListInfo.Selected {
 			cursor = CursorStyle.Render("   >>>")
 			taskStyle = taskStyle.Inherit(SelectedStyle)
 		} else {

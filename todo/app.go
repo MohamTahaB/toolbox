@@ -6,12 +6,12 @@ import (
 
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/toolbox/todo/help"
+	"github.com/toolbox/todo/helpMenu"
 	"github.com/toolbox/todo/model"
 )
 
 func App() {
-	m, err := model.RetrieveModel()
+	m, err := model.NewModel(Keys)
 	if err != nil {
 		fmt.Printf("there has been an error: %v", err)
 		os.Exit(1)
@@ -23,7 +23,7 @@ func App() {
 	}
 }
 
-var Keys = help.KeyMap{
+var Keys = helpmenu.KeyMap{
 	Up: key.NewBinding(
 		key.WithKeys("up"),
 		key.WithHelp("↑", "move up"),

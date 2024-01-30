@@ -34,23 +34,21 @@ func InitiateStorage() (string, error) {
 		return "", fmt.Errorf("error creating file: %v", err)
 	}
 
-	// Add a model instance to the JSON file.
-	m := Model{
-		TasksList: []Task{},
-	}
-	b, err := json.Marshal(m)
+	// Add a listInfo instance to the JSON file.
+	var li ListInfo 
+	b, err := json.Marshal(li)
 	if err != nil {
-		return "", fmt.Errorf("error adding a model instance to the file: %v", err)
+		return "", fmt.Errorf("error adding a list info instance to the file: %v", err)
 	}
 	if _, err = file.Write(b); err != nil {
-		return "", fmt.Errorf("error adding a model instance to the file: %v", err)
+		return "", fmt.Errorf("error adding a list info instance to the file: %v", err)
 	}
 	defer file.Close()
 	return fileName, nil
 }
 
-// RetrieveModel serves as a call to get the content of the JSON file, that each transaction will do, similarly to a SQL migrate.
-func RetrieveModel() (*Model, error) {
+// RetrieveListInfo serves as a call to get the content of the JSON file, that each transaction will do, similarly to a SQL migrate.
+func RetrieveListInfo() (*ListInfo, error) {
 
 	// First, initiate the storage.
 	fileName, err := InitiateStorage()
@@ -67,18 +65,18 @@ func RetrieveModel() (*Model, error) {
 		return nil, fmt.Errorf("error reading the file: %v", err)
 	}
 
-	// Initiate a ptr to the model.
-	var m *Model = &Model{}
+	// Initiate a ptr to a list info instance.
+	var li *ListInfo = &ListInfo{}
 	// Unmarshal the byte slice.
-	if err = json.Unmarshal(b, m); err != nil {
+	if err = json.Unmarshal(b, li); err != nil {
 		return nil, fmt.Errorf("error unmarshalling the file: %v", err)
 	}
 
-	return m, nil
+	return li, nil
 }
 
-// CommitModel commits a model instance to the storage JSON file.
-func CommitModel(m *Model) error {
+// CommitListInfo commits a list info instance to the storage JSON file.
+func CommitListInfo(li *ListInfo) error {
 
 	// First, initiate the storage.
 	fileName, err := InitiateStorage()
@@ -86,13 +84,13 @@ func CommitModel(m *Model) error {
 		return err
 	}
 
-	// Marshal the model.
-	b, err := json.Marshal(m)
+	// Marshal the list info instance.
+	b, err := json.Marshal(li)
 	if err != nil {
 		return fmt.Errorf("error marshalling the file: %v", err)
 	}
 
-	// Write marshalled model in the storage JSON file.
+	// Write marshalled list info in the storage JSON file.
 	if err = os.WriteFile(fileName, b, 0755); err != nil {
 		return fmt.Errorf("error writing to the file: %v", err)
 	}

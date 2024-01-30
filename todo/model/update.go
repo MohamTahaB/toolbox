@@ -18,21 +18,21 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		// Scroll the items, up.
 		case "up":
-			m.Selected--
-			m.Selected += len(m.TasksList)
-			m.Selected %= len(m.TasksList)
+			m.ListInfo.Selected--
+			m.ListInfo.Selected += len(m.ListInfo.TasksList)
+			m.ListInfo.Selected %= len(m.ListInfo.TasksList)
 
 		// Scroll the items, down.
 		case "down":
-			m.Selected++
-			m.Selected %= len(m.TasksList)
+			m.ListInfo.Selected++
+			m.ListInfo.Selected %= len(m.ListInfo.TasksList)
 
 		// Select the highlighted item.
 		case "enter":
-			m.TasksList[m.Selected].Done = !m.TasksList[m.Selected].Done
+			m.ListInfo.TasksList[m.ListInfo.Selected].Done = !m.ListInfo.TasksList[m.ListInfo.Selected].Done
 		}
 
 	}
-	CommitModel(&m)
+	CommitListInfo(&m.ListInfo)
 	return m, cmd
 }

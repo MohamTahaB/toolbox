@@ -1,10 +1,10 @@
-package help
+package helpmenu
 
 import "github.com/charmbracelet/bubbles/key"
 
 // Help KeyMap struct.
 type KeyMap struct {
-	Up key.Binding
+	Up   key.Binding
 	Down key.Binding
 	Help key.Binding
 	Quit key.Binding
