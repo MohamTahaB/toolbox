@@ -19,7 +19,7 @@ func InitiateStorage() (string, error) {
 	fileName := filepath.Join(usr.HomeDir, ".toolbox", ".todo", "storage.json")
 
 	// Check if the JSON file already exists.
-	if _, err := os.Stat(fileName); os.IsExist(err) {
+	if _, err := os.Stat(fileName); !os.IsNotExist(err) {
 		return fileName, nil
 	}
 
