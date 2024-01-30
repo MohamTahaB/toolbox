@@ -41,7 +41,7 @@ func (m Model) View() string {
 
 	// Build the help view.
 	helpView := m.Help.View(m.Keys)
-	fmt.Fprintf(&b, "\n\n %s", helpView)
+	fmt.Fprintf(&b, "\n\n%s", helpView)
 
 	// Render the final string.
 	return b.String()
