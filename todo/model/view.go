@@ -38,6 +38,12 @@ func (m Model) View() string {
 		// Add the task to the builder.
 		fmt.Fprintf(&b, "%s [%s] %s;\n", cursor, check, taskStyle.Render(task.Title))
 	}
+
+	// Build the help view.
+	helpView := m.Help.View(m.Keys)
+	fmt.Fprintf(&b, "\n\n %s", helpView)
+
+	// Render the final string.
 	return b.String()
 
 }

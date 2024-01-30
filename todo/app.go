@@ -6,7 +6,7 @@ import (
 
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/toolbox/todo/helpMenu"
+	helpmenu "github.com/toolbox/todo/helpMenu"
 	"github.com/toolbox/todo/model"
 )
 
@@ -39,5 +39,9 @@ var Keys = helpmenu.KeyMap{
 	Quit: key.NewBinding(
 		key.WithKeys("q", "esc", "ctrl+c"),
 		key.WithHelp("q", "quit"),
+	),
+	Check: key.NewBinding(
+		key.WithKeys("enter"),
+		key.WithHelp("↪", "toggle check / uncheck"),
 	),
 }
