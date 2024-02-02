@@ -16,11 +16,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		constants.Keys.Down.SetEnabled(false)
 		constants.Keys.Delete.SetEnabled(false)
 		constants.Keys.Check.SetEnabled(false)
-
-		defer constants.Keys.Up.SetEnabled(true)
-		defer constants.Keys.Down.SetEnabled(true)
-		defer constants.Keys.Delete.SetEnabled(true)
-		defer constants.Keys.Check.SetEnabled(true)
+	} else {
+		constants.Keys.Up.SetEnabled(true)
+		constants.Keys.Down.SetEnabled(true)
+		constants.Keys.Delete.SetEnabled(true)
+		constants.Keys.Check.SetEnabled(true)
 	}
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
