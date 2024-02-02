@@ -10,6 +10,18 @@ import (
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 	cmd = nil
+
+	if len(m.ListInfo.TasksList) == 0 {
+		constants.Keys.Up.SetEnabled(false)
+		constants.Keys.Down.SetEnabled(false)
+		constants.Keys.Delete.SetEnabled(false)
+		constants.Keys.Check.SetEnabled(false)
+
+		defer constants.Keys.Up.SetEnabled(true)
+		defer constants.Keys.Down.SetEnabled(true)
+		defer constants.Keys.Delete.SetEnabled(true)
+		defer constants.Keys.Check.SetEnabled(true)
+	}
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		// If a width is set to the help menu, this will enable it to

@@ -10,34 +10,41 @@ import (
 
 // View function.
 func (m Model) View() string {
+
 	var b strings.Builder
 	var check, cursor string
 
 	// Build the string.
 	fmt.Fprint(&b, "Your ToDo list...\n\n")
-	for index, task := range m.ListInfo.TasksList {
 
-		// Configure task style.
-		taskStyle := lipgloss.NewStyle()
+	if len(m.ListInfo.TasksList) == 0 {
+		fmt.Fprint(&b, "no tasks found, please add some...")
+	} else {
 
-		// Configure the cursor.
-		if index == m.ListInfo.Selected {
-			cursor = CursorStyle.Render("   >>>")
-			taskStyle = taskStyle.Inherit(SelectedStyle)
-		} else {
-			cursor = "      "
+		for index, task := range m.ListInfo.TasksList {
+
+			// Configure task style.
+			taskStyle := lipgloss.NewStyle()
+
+			// Configure the cursor.
+			if index == m.ListInfo.Selected {
+				cursor = CursorStyle.Render("   >>>")
+				taskStyle = taskStyle.Inherit(SelectedStyle)
+			} else {
+				cursor = "      "
+			}
+
+			// Configure the check.
+			if task.Done {
+				check = SelectedStyle.Render("✓")
+				taskStyle = taskStyle.Inherit(StrikeThroughStyle)
+			} else {
+				check = " "
+			}
+
+			// Add the task to the builder.
+			fmt.Fprintf(&b, "%s [%s] %s;\n", cursor, check, taskStyle.Render(task.Title))
 		}
-
-		// Configure the check.
-		if task.Done {
-			check = SelectedStyle.Render("✓")
-			taskStyle = taskStyle.Inherit(StrikeThroughStyle)
-		} else {
-			check = " "
-		}
-
-		// Add the task to the builder.
-		fmt.Fprintf(&b, "%s [%s] %s;\n", cursor, check, taskStyle.Render(task.Title))
 	}
 
 	// Build the help view.
