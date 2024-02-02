@@ -39,6 +39,17 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, constants.Keys.Check):
 			m.ListInfo.TasksList[m.ListInfo.Selected].Done = !m.ListInfo.TasksList[m.ListInfo.Selected].Done
 
+		// Delete the highlighted item.
+		case key.Matches(msg, constants.Keys.Delete):
+			if err := m.ListInfo.TasksList[m.ListInfo.Selected].DeleteTask(); err != nil {
+				panic(err)
+			}
+			li, err := RetrieveListInfo()
+			if err != nil {
+				panic(err)
+			}
+			m.ListInfo = *li
+
 		// Toggle help
 		case key.Matches(msg, constants.Keys.Help):
 			m.Help.ShowAll = !m.Help.ShowAll

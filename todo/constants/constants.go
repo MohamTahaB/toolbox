@@ -26,4 +26,8 @@ var Keys = helpmenu.KeyMap{
 		key.WithKeys("enter"),
 		key.WithHelp("↪", "toggle check / uncheck"),
 	),
+	Delete: key.NewBinding(
+		key.WithKeys("delete"),
+		key.WithHelp("⌦", "delete task"),
+	),
 }
