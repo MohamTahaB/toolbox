@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/charmbracelet/lipgloss"
+	"github.com/toolbox/todo/constants"
 )
 
 // View function.
@@ -40,7 +41,7 @@ func (m Model) View() string {
 	}
 
 	// Build the help view.
-	helpView := m.Help.View(m.Keys)
+	helpView := m.Help.View(constants.Keys)
 	fmt.Fprintf(&b, "\n\n%s", helpView)
 
 	// Render the final string.

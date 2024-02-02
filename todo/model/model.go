@@ -2,13 +2,11 @@ package model
 
 import (
 	"github.com/charmbracelet/bubbles/help"
-	helpmenu "github.com/toolbox/todo/helpMenu"
 )
 
 // Model structure, consists of a list of all tasks, and the index of the selected one.
 type Model struct {
 	ListInfo ListInfo
-	Keys     helpmenu.KeyMap
 	Help     help.Model
 }
 
@@ -24,14 +22,13 @@ type Task struct {
 	Done  bool   `json:"done"`
 }
 
-func NewModel(k helpmenu.KeyMap) (*Model, error) {
+func NewModel() (*Model, error) {
 	li, err := RetrieveListInfo()
 	if err != nil {
 		return nil, err
 	}
 	return &Model{
 		ListInfo: *li,
-		Keys: k,
-		Help: help.New(),
+		Help:     help.New(),
 	}, nil
 }
