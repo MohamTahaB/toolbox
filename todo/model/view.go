@@ -49,7 +49,12 @@ func (m Model) View() string {
 
 	// Build the help view.
 	helpView := m.Help.View(constants.Keys)
-	fmt.Fprintf(&b, "\n\n%s", helpView)
+	fmt.Fprintf(&b, "\n\n%s\n\n", helpView)
+
+	// Check if the state is in reading or writing.
+	if m.State == writing {
+		fmt.Fprintf(&b, "$ %s", m.TaskInput.View())
+	}
 
 	// Render the final string.
 	return b.String()

@@ -9,6 +9,7 @@ type KeyMap struct {
 	Help   key.Binding
 	Quit   key.Binding
 	Check  key.Binding
+	Write  key.Binding
 	Delete key.Binding
 }
 
@@ -21,7 +22,7 @@ func (k KeyMap) ShortHelp() []key.Binding {
 func (k KeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
 		{k.Up, k.Down},
-		{k.Check, k.Delete},
+		{k.Check, k.Delete, k.Write},
 		{k.Help, k.Quit},
 	}
 }

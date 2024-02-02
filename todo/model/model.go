@@ -2,10 +2,20 @@ package model
 
 import (
 	"github.com/charmbracelet/bubbles/help"
+	"github.com/charmbracelet/bubbles/textinput"
+)
+
+type state int
+
+const (
+	reading state = iota
+	writing
 )
 
 // Model structure, consists of a list of all tasks, and the index of the selected one.
 type Model struct {
+	State state
+	TaskInput textinput.Model
 	ListInfo ListInfo
 	Help     help.Model
 }
@@ -28,7 +38,9 @@ func NewModel() (*Model, error) {
 		return nil, err
 	}
 	return &Model{
+		State: reading,
 		ListInfo: *li,
 		Help:     help.New(),
+		TaskInput: textinput.New(),
 	}, nil
 }
