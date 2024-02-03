@@ -1,4 +1,4 @@
-package helpmenu
+package constants
 
 import "github.com/charmbracelet/bubbles/key"
 

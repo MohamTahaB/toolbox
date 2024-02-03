@@ -2,10 +2,9 @@ package constants
 
 import (
 	"github.com/charmbracelet/bubbles/key"
-	helpmenu "github.com/toolbox/todo/helpMenu"
 )
 
-var Keys = helpmenu.KeyMap{
+var Keys = KeyMap{
 	Up: key.NewBinding(
 		key.WithKeys("up"),
 		key.WithHelp("↑", "move up"),
@@ -28,7 +27,7 @@ var Keys = helpmenu.KeyMap{
 	),
 	Write: key.NewBinding(
 		key.WithKeys("n", "w"),
-		key.WithHelp("n | w", "add new task" ),
+		key.WithHelp("n | w", "add new task"),
 	),
 	Delete: key.NewBinding(
 		key.WithKeys("delete"),
