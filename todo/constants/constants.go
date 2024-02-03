@@ -30,7 +30,7 @@ var Keys = KeyMap{
 		key.WithHelp("n | w", "add new task"),
 	),
 	Delete: key.NewBinding(
-		key.WithKeys("delete"),
+		key.WithKeys("backspace"),
 		key.WithHelp("⌦", "delete task"),
 	),
 }
