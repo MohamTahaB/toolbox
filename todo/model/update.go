@@ -14,15 +14,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	cmd = nil
 
 	if len(m.ListInfo.TasksList) == 0 {
-		constants.Keys.Up.SetEnabled(false)
-		constants.Keys.Down.SetEnabled(false)
-		constants.Keys.Delete.SetEnabled(false)
-		constants.Keys.Check.SetEnabled(false)
+		constants.Keys.DisableNav()
 	} else {
-		constants.Keys.Up.SetEnabled(true)
-		constants.Keys.Down.SetEnabled(true)
-		constants.Keys.Delete.SetEnabled(true)
-		constants.Keys.Check.SetEnabled(true)
+		constants.Keys.EnableNav()
 	}
 
 	if m.State == writing {
