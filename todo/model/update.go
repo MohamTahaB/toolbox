@@ -115,7 +115,7 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 			uuid, _ := uuid.NewV7()
 			task := Task{
 				ID:    uuid.String(),
-				Title: m.TaskInput.View(),
+				Title: m.TaskInput.Value(),
 				Done:  false,
 			}
 
@@ -126,8 +126,11 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 			m.State = reading
 			constants.Keys.ReadingMode(len(m.ListInfo.TasksList) == 0)
 
+			// Reset the task input.
+			m.TaskInput.Reset()
+
 		default:
-			m.TaskInput, *cmd = m.TaskInput.Update(msg)
+			m.TaskInput, *cmd = m.TaskInput.Update(*msg)
 		}
 	}
 }
