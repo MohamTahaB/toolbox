@@ -44,7 +44,7 @@ func (k *KeyMap) EnableNav() {
 	}
 }
 
-// Returns a ptr to a nav keys slice.
+// Returns a nav keys ptrs slice.
 func (k *KeyMap) NavKeys() []*key.Binding {
 	return []*key.Binding{&k.Up, &k.Down, &k.Delete, &k.Check}
 }
