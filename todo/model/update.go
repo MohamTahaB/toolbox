@@ -13,14 +13,17 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 	cmd = nil
 
+	// Toggle nav, depending on whether the task list is empty or not.
 	if len(m.ListInfo.TasksList) == 0 {
 		constants.Keys.DisableNav()
 	} else {
 		constants.Keys.EnableNav()
 	}
 
+	// Change some keys desc when the model is in writing state.
 	if m.State == writing {
 		constants.Keys.Check.SetEnabled(true)
+		constants.Keys.Check.SetHelp("↪", "validate the task")
 	}
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
@@ -82,6 +85,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.State = reading
 
 			case key.Matches(msg, constants.Keys.Check):
+
+				// Create a new id and build the task struct.
 				uuid, _ := uuid.NewV7()
 				task := Task{
 					ID:    uuid.String(),
@@ -89,9 +94,14 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					Done:  false,
 				}
 
+				// Add the new task to the list info.
 				m.ListInfo.TasksList = append(m.ListInfo.TasksList, task)
 
+				// Toggle the state.
 				m.State = reading
+
+				// Enable nav.
+				constants.Keys.EnableNav()
 
 			default:
 				m.TaskInput, cmd = m.TaskInput.Update(msg)
