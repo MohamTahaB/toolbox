@@ -1,6 +1,8 @@
 package constants
 
-import "github.com/charmbracelet/bubbles/key"
+import (
+	"github.com/charmbracelet/bubbles/key"
+)
 
 // Help KeyMap struct.
 type KeyMap struct {
@@ -47,4 +49,26 @@ func (k *KeyMap) EnableNav() {
 // Returns a nav keys ptrs slice.
 func (k *KeyMap) NavKeys() []*key.Binding {
 	return []*key.Binding{&k.Up, &k.Down, &k.Delete, &k.Check}
+}
+
+// Preps the keymap when the state is writing.
+func (k *KeyMap) WritingMode() {
+
+	k.DisableNav()
+	k.Write.SetEnabled(false)
+	k.Check.SetEnabled(true)
+	k.Check.SetHelp("↪", "validate the task")
+}
+
+// Preps the keymap when the state is reading.
+func (k *KeyMap) ReadingMode(isTaskListEmpty bool) {
+
+	k.Check.SetEnabled(true)
+	k.Check.SetHelp("↪", "toggle check / uncheck")
+
+	if isTaskListEmpty {
+		k.DisableNav()
+	} else {
+		k.EnableNav()
+	}
 }
