@@ -17,7 +17,7 @@ type KeyMap struct {
 
 func (k KeyMap) ShortHelp() []key.Binding {
 	return []key.Binding{
-		k.Help, k.Quit,
+		k.Check, k.Help, k.Quit,
 	}
 }
 
@@ -63,6 +63,7 @@ func (k *KeyMap) WritingMode() {
 // Preps the keymap when the state is reading.
 func (k *KeyMap) ReadingMode(isTaskListEmpty bool) {
 
+	k.Write.SetEnabled(true)
 	k.Check.SetEnabled(true)
 	k.Check.SetHelp("↪", "toggle check / uncheck")
 

@@ -9,15 +9,13 @@ import (
 
 // Update function.
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	var cmd tea.Cmd = nil
+	var cmd tea.Cmd
 
 	// Prep keymap according to the state of the model, and whether it can be navigated or not.
 	switch m.State {
 	case reading:
 		constants.Keys.ReadingMode(len(m.ListInfo.TasksList) == 0)
 	case writing:
-		// Show all help so that the interrogation point can be used in the task title.
-		m.Help.ShowAll = true
 		constants.Keys.WritingMode()
 	}
 
@@ -77,6 +75,17 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 			}
 			m.ListInfo = *li
 
+			// In case the last element is deleted, the cursor should always stay in the scope of the new task list.
+			if m.ListInfo.Selected >= len(m.ListInfo.TasksList) {
+				m.ListInfo.Selected = len(m.ListInfo.TasksList) - 1
+			}
+			if m.ListInfo.Selected < 0 {
+				m.ListInfo.Selected = 0
+			}
+
+			// Reprep the keymap in case the task list is empty.
+			constants.Keys.ReadingMode(len(m.ListInfo.TasksList) == 0)
+
 		// Toggle help.
 		case key.Matches(*msg, constants.Keys.Help):
 			m.Help.ShowAll = !m.Help.ShowAll
@@ -120,6 +129,5 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 		default:
 			m.TaskInput, *cmd = m.TaskInput.Update(msg)
 		}
-
 	}
 }
