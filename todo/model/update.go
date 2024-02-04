@@ -2,7 +2,6 @@ package model
 
 import (
 	"github.com/charmbracelet/bubbles/key"
-	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/google/uuid"
 	"github.com/toolbox/todo/constants"
@@ -10,14 +9,15 @@ import (
 
 // Update function.
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
-	var cmd tea.Cmd
-	cmd = nil
+	var cmd tea.Cmd = nil
 
 	// Prep keymap according to the state of the model, and whether it can be navigated or not.
 	switch m.State {
 	case reading:
 		constants.Keys.ReadingMode(len(m.ListInfo.TasksList) == 0)
 	case writing:
+		// Show all help so that the interrogation point can be used in the task title.
+		m.Help.ShowAll = true
 		constants.Keys.WritingMode()
 	}
 
@@ -29,82 +29,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	// Now, on to the key messages.
 	case tea.KeyMsg:
-		switch m.State {
-		case reading:
-
-			switch {
-
-			// Exit the program.
-			case key.Matches(msg, constants.Keys.Quit):
-				cmd = tea.Quit
-
-			// Scroll the items, up.
-			case key.Matches(msg, constants.Keys.Up):
-				m.ListInfo.Selected--
-				m.ListInfo.Selected += len(m.ListInfo.TasksList)
-				m.ListInfo.Selected %= len(m.ListInfo.TasksList)
-
-			// Scroll the items, down.
-			case key.Matches(msg, constants.Keys.Down):
-				m.ListInfo.Selected++
-				m.ListInfo.Selected %= len(m.ListInfo.TasksList)
-
-			// Select the highlighted item.
-			case key.Matches(msg, constants.Keys.Check):
-				m.ListInfo.TasksList[m.ListInfo.Selected].Done = !m.ListInfo.TasksList[m.ListInfo.Selected].Done
-
-			// Delete the highlighted item.
-			case key.Matches(msg, constants.Keys.Delete):
-				if err := m.ListInfo.TasksList[m.ListInfo.Selected].DeleteTask(); err != nil {
-					panic(err)
-				}
-				li, err := RetrieveListInfo()
-				if err != nil {
-					panic(err)
-				}
-				m.ListInfo = *li
-
-			// Toggle help.
-			case key.Matches(msg, constants.Keys.Help):
-				m.Help.ShowAll = !m.Help.ShowAll
-
-			// Switch state.
-			case key.Matches(msg, constants.Keys.Write):
-				m.State = writing
-			}
-		case writing:
-
-			m.TaskInput.Focus()
-			switch {
-			case key.Matches(msg, constants.Keys.Quit):
-				m.TaskInput = textinput.New()
-				m.State = reading
-
-			case key.Matches(msg, constants.Keys.Check):
-
-				// Create a new id and build the task struct.
-				uuid, _ := uuid.NewV7()
-				task := Task{
-					ID:    uuid.String(),
-					Title: m.TaskInput.View(),
-					Done:  false,
-				}
-
-				// Add the new task to the list info.
-				m.ListInfo.TasksList = append(m.ListInfo.TasksList, task)
-
-				// Toggle the state.
-				m.State = reading
-
-				// Enable nav.
-				constants.Keys.EnableNav()
-
-			default:
-				m.TaskInput, cmd = m.TaskInput.Update(msg)
-			}
-
-		}
-
+		handleKeyMsg(&m, &msg, &cmd)
 	}
 	CommitListInfo(&m.ListInfo)
 	li, _ := RetrieveListInfo()
