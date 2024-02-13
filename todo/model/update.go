@@ -11,13 +11,7 @@ import (
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
 
-	// Prep keymap according to the state of the model, and whether it can be navigated or not.
-	switch m.State {
-	case readingTasks:
-		constants.Keys.ReadingMode(len(m.ListInfo.TasksList) == 0)
-	case writingTasks:
-		constants.Keys.WritingMode()
-	}
+	
 
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
@@ -29,6 +23,19 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		handleKeyMsg(&m, &msg, &cmd)
 	}
+
+	// Prep keymap according to the state of the model, and whether it can be navigated or not.
+	switch m.State {
+	case readingTasks:
+		constants.Keys.ReadingMode(len(m.ListInfo.TasksList) == 0)
+	case writingTasks:
+		constants.Keys.WritingMode()
+	case checkingDetails:
+		constants.Keys.CheckingDetailsMode()
+	case writingDetail:
+		constants.Keys.WritingDetailMode()
+	}
+
 	CommitListInfo(&m.ListInfo)
 	li, _ := RetrieveListInfo()
 	m.ListInfo = *li

@@ -79,6 +79,7 @@ func (k *KeyMap) ReadingMode(isTaskListEmpty bool) {
 // Preps the keymap when the state is checking details of a certain task in a list.
 func (k *KeyMap) CheckingDetailsMode() {
 	k.DisableNav()
+	k.Write.SetEnabled(true)
 	k.Write.SetHelp("n | w", "edit description")
 }
 
