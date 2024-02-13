@@ -19,17 +19,7 @@ func (m Model) View() string {
 
 	switch {
 	case m.State == checkingDetails:
-		// Add the title of the highlighted task.
-		fmt.Fprintf(&b, "Title: %s\n", m.ListInfo.TasksList[m.ListInfo.Selected].Title)
-
-		// Add the description of the highlighted task.
-		desc := m.ListInfo.TasksList[m.ListInfo.Selected].Description
-
-		if len(desc) == 0 {
-			desc = "no description available."
-		}
-		fmt.Fprintf(&b, "Description: %s\n", desc)
-
+		m.checkDetails(&b)
 	// Default case.
 	default:
 		if len(m.ListInfo.TasksList) == 0 {
@@ -76,4 +66,27 @@ func (m Model) View() string {
 	// Render the final string.
 	return b.String()
 
+}
+
+// checkDetails renders the details of current task.
+// It is called upon when the status is checkingDetails.
+func (m Model) checkDetails(b *strings.Builder)  {
+	// Add the title.
+	fmt.Fprintf(b, "Title: %s\n", m.ListInfo.TasksList[m.ListInfo.Selected].Title)
+
+	// Add the description of the highlighted task.
+	desc := m.ListInfo.TasksList[m.ListInfo.Selected].Description
+
+	if len(desc) == 0 {
+		desc = "no description available."
+	}
+	fmt.Fprintf(b, "Description: %s\n", desc)
+
+	// Add status.
+	status := "Done"
+	if !m.ListInfo.TasksList[m.ListInfo.Selected].Done {
+		status = "Pending"
+	}
+
+	fmt.Fprintf(b, "Status: %s\n", status)
 }
