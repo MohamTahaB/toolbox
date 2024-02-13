@@ -24,6 +24,7 @@ type Model struct {
 	Help             help.Model
 }
 
+
 type ListInfo struct {
 	TasksList []Task `json:"tasksList"`
 	Selected  int    `json:"selected"`
