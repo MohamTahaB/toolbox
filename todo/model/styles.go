@@ -11,3 +11,6 @@ var CursorStyle = lipgloss.NewStyle().
 var StrikeThroughStyle = lipgloss.NewStyle().
 	Strikethrough(true).
 	Faint(true)
+
+var FaintStyle = lipgloss.NewStyle().
+				 Faint(true)

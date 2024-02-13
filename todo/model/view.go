@@ -82,7 +82,7 @@ func (m Model) checkDetails(b *strings.Builder) {
 	if len(desc) == 0 {
 		desc = "no description available."
 	}
-	fmt.Fprintf(b, "Description: %s\n", desc)
+	fmt.Fprintf(b, "Description: %s\n", FaintStyle.Render(desc))
 
 	// Add status.
 	status := "Done"
