@@ -166,6 +166,10 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 			// Focus on the description input field.
 			m.DescriptionInput.Focus()
 
+			if len(m.ListInfo.TasksList[m.ListInfo.Selected].Description) != 0 {
+				m.DescriptionInput.SetValue(m.ListInfo.TasksList[m.ListInfo.Selected].Description)
+			}
+
 			// Switch state to writing detail.
 			m.State = writingDetail
 			constants.Keys.WritingDetailMode()
