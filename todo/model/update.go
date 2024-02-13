@@ -148,6 +148,10 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 		case key.Matches(*msg, constants.Keys.Quit):
 			constants.Keys.ReadingMode(len(m.ListInfo.TasksList) == 0)
 			m.State = reading
+
+		// Toggle help.
+		case key.Matches(*msg, constants.Keys.Help):
+			m.Help.ShowAll = !m.Help.ShowAll
 		}
 	}
 }
