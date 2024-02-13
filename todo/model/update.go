@@ -35,7 +35,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-// Handles the updates to be done depending on whether the model is in reading or writing states.
+// Handles the updates to be done depending on the model's state.
 func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 	switch m.State {
 
@@ -94,6 +94,11 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 		case key.Matches(*msg, constants.Keys.Write):
 			m.State = writing
 			constants.Keys.WritingMode()
+
+		// Get details description.
+		case key.Matches(*msg, constants.Keys.Details):
+			m.State = checkingDetails
+			constants.Keys.CheckingDetailsMode()
 		}
 
 	// Writing state.
@@ -131,6 +136,18 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 
 		default:
 			m.TaskInput, *cmd = m.TaskInput.Update(*msg)
+		}
+
+	// Checking details state.
+	case checkingDetails:
+
+		// Describe the behaviour for all key bindings.
+		switch {
+
+		// Quit the details description.
+		case key.Matches(*msg, constants.Keys.Quit):
+			constants.Keys.ReadingMode(len(m.ListInfo.TasksList) == 0)
+			m.State = reading
 		}
 	}
 }

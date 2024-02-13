@@ -33,4 +33,8 @@ var Keys = KeyMap{
 		key.WithKeys("backspace"),
 		key.WithHelp("⌦", "delete task"),
 	),
+	Details: key.NewBinding(
+		key.WithKeys("tab"),
+		key.WithHelp("⭾", "details"),
+	),
 }

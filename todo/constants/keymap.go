@@ -6,13 +6,14 @@ import (
 
 // Help KeyMap struct.
 type KeyMap struct {
-	Up     key.Binding
-	Down   key.Binding
-	Help   key.Binding
-	Quit   key.Binding
-	Check  key.Binding
-	Write  key.Binding
-	Delete key.Binding
+	Up      key.Binding
+	Down    key.Binding
+	Help    key.Binding
+	Quit    key.Binding
+	Check   key.Binding
+	Write   key.Binding
+	Delete  key.Binding
+	Details key.Binding
 }
 
 func (k KeyMap) ShortHelp() []key.Binding {
@@ -72,4 +73,11 @@ func (k *KeyMap) ReadingMode(isTaskListEmpty bool) {
 	} else {
 		k.EnableNav()
 	}
+}
+
+// Preps the keymap when the state is checking details of a certain task in a list.
+func (k *KeyMap) CheckingDetailsMode() {
+	k.DisableNav()
+	k.Write.SetEnabled(false)
+	k.Details.SetEnabled(true)
 }

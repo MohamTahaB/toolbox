@@ -10,14 +10,15 @@ type state int
 const (
 	reading state = iota
 	writing
+	checkingDetails
 )
 
 // Model structure, consists of a list of all tasks, and the index of the selected one.
 type Model struct {
-	State state
+	State     state
 	TaskInput textinput.Model
-	ListInfo ListInfo
-	Help     help.Model
+	ListInfo  ListInfo
+	Help      help.Model
 }
 
 type ListInfo struct {
@@ -27,9 +28,10 @@ type ListInfo struct {
 
 // Task structure, consists of a title and a boolean that describes its state.
 type Task struct {
-	ID    string `json:"id"`
-	Title string `json:"title"`
-	Done  bool   `json:"done"`
+	ID          string `json:"id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Done        bool   `json:"done"`
 }
 
 func NewModel() (*Model, error) {
@@ -38,9 +40,9 @@ func NewModel() (*Model, error) {
 		return nil, err
 	}
 	return &Model{
-		State: reading,
-		ListInfo: *li,
-		Help:     help.New(),
+		State:     reading,
+		ListInfo:  *li,
+		Help:      help.New(),
 		TaskInput: textinput.New(),
 	}, nil
 }

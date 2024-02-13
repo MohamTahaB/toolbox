@@ -17,34 +17,51 @@ func (m Model) View() string {
 	// Build the string.
 	fmt.Fprint(&b, "Your ToDo list...\n\n")
 
-	if len(m.ListInfo.TasksList) == 0 {
-		fmt.Fprint(&b, "no tasks found, please add some...")
-	} else {
+	switch {
+	case m.State == checkingDetails:
+		// Add the title of the highlighted task.
+		fmt.Fprintf(&b, "Title: %s\n", m.ListInfo.TasksList[m.ListInfo.Selected].Title)
 
-		for index, task := range m.ListInfo.TasksList {
+		// Add the description of the highlighted task.
+		desc := m.ListInfo.TasksList[m.ListInfo.Selected].Description
 
-			// Configure task style.
-			taskStyle := lipgloss.NewStyle()
-
-			// Configure the cursor.
-			if index == m.ListInfo.Selected {
-				cursor = CursorStyle.Render("   >>>")
-				taskStyle = taskStyle.Inherit(SelectedStyle)
-			} else {
-				cursor = "      "
-			}
-
-			// Configure the check.
-			if task.Done {
-				check = SelectedStyle.Render("✓")
-				taskStyle = taskStyle.Inherit(StrikeThroughStyle)
-			} else {
-				check = " "
-			}
-
-			// Add the task to the builder.
-			fmt.Fprintf(&b, "%s [%s] %s;\n", cursor, check, taskStyle.Render(task.Title))
+		if len(desc) == 0 {
+			desc = "no description available."
 		}
+		fmt.Fprintf(&b, "Description: %s\n", desc)
+
+	// Default case.
+	default:
+		if len(m.ListInfo.TasksList) == 0 {
+			fmt.Fprint(&b, "no tasks found, please add some...")
+		} else {
+
+			for index, task := range m.ListInfo.TasksList {
+
+				// Configure task style.
+				taskStyle := lipgloss.NewStyle()
+
+				// Configure the cursor.
+				if index == m.ListInfo.Selected {
+					cursor = CursorStyle.Render("   >>>")
+					taskStyle = taskStyle.Inherit(SelectedStyle)
+				} else {
+					cursor = "      "
+				}
+
+				// Configure the check.
+				if task.Done {
+					check = SelectedStyle.Render("✓")
+					taskStyle = taskStyle.Inherit(StrikeThroughStyle)
+				} else {
+					check = " "
+				}
+
+				// Add the task to the builder.
+				fmt.Fprintf(&b, "%s [%s] %s;\n", cursor, check, taskStyle.Render(task.Title))
+			}
+		}
+
 	}
 
 	// Build the help view.
