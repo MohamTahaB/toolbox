@@ -67,6 +67,7 @@ func (k *KeyMap) ReadingMode(isTaskListEmpty bool) {
 	k.Write.SetEnabled(true)
 	k.Check.SetEnabled(true)
 	k.Check.SetHelp("↪", "toggle check / uncheck")
+	k.Write.SetHelp("n | w", "add new task")
 
 	if isTaskListEmpty {
 		k.DisableNav()
@@ -78,6 +79,12 @@ func (k *KeyMap) ReadingMode(isTaskListEmpty bool) {
 // Preps the keymap when the state is checking details of a certain task in a list.
 func (k *KeyMap) CheckingDetailsMode() {
 	k.DisableNav()
+	k.Write.SetHelp("n | w", "edit description")
+}
+
+// Preps the keymap when the state is writing detail of a certain task in a list.
+func (k *KeyMap) WritingDetailMode() {
+	k.DisableNav()
 	k.Write.SetEnabled(false)
-	k.Details.SetEnabled(true)
+
 }

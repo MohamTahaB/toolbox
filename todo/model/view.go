@@ -20,6 +20,8 @@ func (m Model) View() string {
 	switch {
 	case m.State == checkingDetails:
 		m.checkDetails(&b)
+	case m.State == writingDetail:
+		m.writeDetail(&b)
 	// Default case.
 	default:
 		if len(m.ListInfo.TasksList) == 0 {
@@ -59,7 +61,7 @@ func (m Model) View() string {
 	fmt.Fprintf(&b, "\n\n%s\n\n", helpView)
 
 	// Check if the state is in reading or writing.
-	if m.State == writing {
+	if m.State == writingTasks {
 		fmt.Fprintf(&b, "$ %s", m.TaskInput.View())
 	}
 
@@ -70,7 +72,7 @@ func (m Model) View() string {
 
 // checkDetails renders the details of current task.
 // It is called upon when the status is checkingDetails.
-func (m Model) checkDetails(b *strings.Builder)  {
+func (m Model) checkDetails(b *strings.Builder) {
 	// Add the title.
 	fmt.Fprintf(b, "Title: %s\n", m.ListInfo.TasksList[m.ListInfo.Selected].Title)
 
@@ -89,4 +91,12 @@ func (m Model) checkDetails(b *strings.Builder)  {
 	}
 
 	fmt.Fprintf(b, "Status: %s\n", status)
+}
+
+// writeDetail renders the info of the current task, as well as the description input.
+func (m Model) writeDetail(b *strings.Builder) {
+	m.checkDetails(b)
+	
+	// Add the description text area view.
+	fmt.Fprintf(b, "\n\n%s\n", m.DescriptionInput.View())
 }

@@ -13,9 +13,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	// Prep keymap according to the state of the model, and whether it can be navigated or not.
 	switch m.State {
-	case reading:
+	case readingTasks:
 		constants.Keys.ReadingMode(len(m.ListInfo.TasksList) == 0)
-	case writing:
+	case writingTasks:
 		constants.Keys.WritingMode()
 	}
 
@@ -39,8 +39,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 	switch m.State {
 
-	// Reading state.
-	case reading:
+	// Reading tasks state.
+	case readingTasks:
 
 		// Describe the behaviour for all key bindings.
 		switch {
@@ -92,7 +92,7 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 
 		// Switch state.
 		case key.Matches(*msg, constants.Keys.Write):
-			m.State = writing
+			m.State = writingTasks
 			constants.Keys.WritingMode()
 
 		// Get details description.
@@ -101,8 +101,8 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 			constants.Keys.CheckingDetailsMode()
 		}
 
-	// Writing state.
-	case writing:
+	// Writing tasks state.
+	case writingTasks:
 
 		// Focus on the text input field
 		m.TaskInput.Focus()
@@ -112,7 +112,7 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 		case key.Matches(*msg, constants.Keys.Quit):
 			m.TaskInput.Reset()
 			// Toggle state.
-			m.State = reading
+			m.State = readingTasks
 			constants.Keys.ReadingMode(len(m.ListInfo.TasksList) == 0)
 
 		case key.Matches(*msg, constants.Keys.Check):
@@ -128,7 +128,7 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 			m.ListInfo.TasksList = append(m.ListInfo.TasksList, task)
 
 			// Toggle the state.
-			m.State = reading
+			m.State = readingTasks
 			constants.Keys.ReadingMode(len(m.ListInfo.TasksList) == 0)
 
 			// Reset the task input.
@@ -147,11 +147,49 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 		// Quit the details description.
 		case key.Matches(*msg, constants.Keys.Quit):
 			constants.Keys.ReadingMode(len(m.ListInfo.TasksList) == 0)
-			m.State = reading
+			m.State = readingTasks
 
 		// Toggle help.
 		case key.Matches(*msg, constants.Keys.Help):
 			m.Help.ShowAll = !m.Help.ShowAll
+
+		// Edit description.
+		case key.Matches(*msg, constants.Keys.Write):
+
+			// Focus on the description input field.
+			m.DescriptionInput.Focus()
+
+			// Switch state to writing detail.
+			m.State = writingDetail
+			constants.Keys.WritingDetailMode()
+			m.Help.ShowAll = true
+		}
+
+	// Writing description state.
+	case writingDetail:
+
+		// Describe the behaviour for all key bindings
+		switch {
+		case msg.Type == tea.KeyCtrlN:
+			m.ListInfo.TasksList[m.ListInfo.Selected].Description = m.DescriptionInput.Value()
+
+			// Reset description input.
+			m.DescriptionInput.Reset()
+
+			// Toggle state to checking details.
+			m.State = checkingDetails
+
+		case key.Matches(*msg, constants.Keys.Quit):
+			// Reset description input.
+			m.DescriptionInput.Reset()
+
+			// Toggle state to checking details>
+			m.State = checkingDetails
+
+			constants.Keys.CheckingDetailsMode()
+
+		default:
+			m.DescriptionInput, *cmd = m.DescriptionInput.Update(*msg)
 		}
 	}
 }
