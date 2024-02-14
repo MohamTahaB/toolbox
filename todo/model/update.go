@@ -1,17 +1,16 @@
 package model
 
 import (
+	"todo/constants"
+
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/google/uuid"
-	"github.com/toolbox/todo/constants"
 )
 
 // Update function.
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmd tea.Cmd
-
-	
 
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:

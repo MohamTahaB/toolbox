@@ -1,6 +1,6 @@
 package main
 
-import "github.com/toolbox/todo"
+import "todo"
 
 func main() {
 	todo.App()

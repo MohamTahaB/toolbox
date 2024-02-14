@@ -1,4 +1,4 @@
-module github.com/toolbox/todo
+module todo
 
 go 1.21
 
@@ -7,7 +7,10 @@ require (
 	github.com/charmbracelet/lipgloss v0.9.1
 )
 
-require github.com/google/uuid v1.6.0 // indirect
+require (
+	github.com/atotto/clipboard v0.1.4 // indirect
+	github.com/google/uuid v1.6.0
+)
 
 require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect

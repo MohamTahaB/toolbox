@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"os"
 
+	"todo/model"
+
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/toolbox/todo/model"
 )
 
 func App() {
