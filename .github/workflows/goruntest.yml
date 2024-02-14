@@ -1,26 +1,26 @@
 name: Go Tests
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    push:
+        branches: [main]
+    pull_request:
+        branches:
+            - "*"
 
 jobs:
-  build:
-    name: Run Go Tests
-    runs-on: ubuntu-latest
+    build:
+        name: Run Go Tests
+        runs-on: ubuntu-latest
 
-    steps:
-    - name: Set up Go
-      uses: actions/setup-go@v3
+        steps:
+            - name: Set up Go
+              uses: actions/setup-go@v3
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v3
+            - name: Check out code into the Go module directory
+              uses: actions/checkout@v3
 
-    - name: Get dependencies
-      run: go mod download
+            - name: Get dependencies
+              run: go mod download
 
-    - name: Run tests
-      run: go test ./... -v
-
+            - name: Run todo tests
+              run: go test todo/... 

@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"strings"
 
+	"todo/constants"
+
 	"github.com/charmbracelet/lipgloss"
-	"github.com/toolbox/todo/constants"
 )
 
 // View function.
@@ -96,7 +97,7 @@ func (m Model) checkDetails(b *strings.Builder) {
 // writeDetail renders the info of the current task, as well as the description input.
 func (m Model) writeDetail(b *strings.Builder) {
 	m.checkDetails(b)
-	
+
 	// Add the description text area view.
 	fmt.Fprintf(b, "\n\n%s\n", m.DescriptionInput.View())
 }

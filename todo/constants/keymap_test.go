@@ -2,9 +2,9 @@ package constants_test
 
 import (
 	"testing"
+	"todo/constants"
 
 	"github.com/charmbracelet/bubbles/key"
-	"github.com/toolbox/todo/constants"
 )
 
 // Checks if disable nav does, indeed, disable nav.

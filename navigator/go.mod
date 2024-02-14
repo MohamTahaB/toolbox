@@ -1,3 +1,3 @@
-module github.com/toolbox/navigator
+module toolbox/navigator
 
 go 1.21
