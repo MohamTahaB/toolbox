@@ -2,10 +2,10 @@ package storage
 
 import (
 	"fmt"
-	listdesignation "toolbox/jotter/storage/listDesignation"
+	filelist "toolbox/jotter/storage/fileList"
 )
 
-func GetListDesignation(JSONDir, id string) (*listdesignation.ListDesignation, error) {
+func GetListDesignation(JSONDir, id string) (*filelist.FileDesignation, error) {
 
 	// Start by unmarshaling the json file.
 	listsMap, err := unmarshal(JSONDir)
