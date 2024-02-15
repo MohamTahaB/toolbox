@@ -46,7 +46,7 @@ func InitiateStorage() (string, string, error) {
 func Create(name string) (string, error) {
 
 	// Check if the storage is properly initiated.
-	JSONDir, dir, err := InitiateStorage()
+	_, dir, err := InitiateStorage()
 	if err != nil {
 		return "", err
 	}
@@ -65,7 +65,7 @@ func Create(name string) (string, error) {
 func Pull(name string) (string, error) {
 
 	// Check if the storage is properly initiated.
-	dir, err := InitiateStorage()
+	_, dir, err := InitiateStorage()
 	if err != nil {
 		return "", err
 	}
@@ -85,7 +85,7 @@ func Pull(name string) (string, error) {
 func Push(name, content string) error {
 
 	// Check if the storage is properly initiated.
-	dir, err := InitiateStorage()
+	_, dir, err := InitiateStorage()
 	if err != nil {
 		return err
 	}

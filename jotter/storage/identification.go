@@ -42,3 +42,12 @@ func editJSON(JSONDir string, content *[]byte) error {
 	}
 	return nil
 }
+
+// Gets the list map from the JSON storage file.
+func getListMap(JSONDir string) (*map[string]string, error) {
+	IDmap, err := unmarshal(JSONDir) 
+	if err != nil {
+		return nil, err 
+	}
+	return IDmap, nil
+}
