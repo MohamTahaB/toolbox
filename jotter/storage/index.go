@@ -8,7 +8,7 @@ import (
 func GetListDesignation(JSONDir, id string) (*filelist.FileDesignation, error) {
 
 	// Start by unmarshaling the json file.
-	listsMap, err := unmarshal(JSONDir)
+	listsMap, err := Unmarshal(JSONDir)
 	if err != nil {
 		return nil, err
 	}
