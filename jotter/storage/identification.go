@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	listdesignation "toolbox/jotter/storage/listDesignation"
 )
 
 // unmarshals the json file into a map of key = id, and value = name.
-func unmarshal(JSONDir string) (*map[string]string, error) {
+func unmarshal(JSONDir string) (*map[string]listdesignation.ListDesignation, error) {
 	// Read the json file.
 	b, err := os.ReadFile(JSONDir)
 	if err != nil {
@@ -15,7 +16,7 @@ func unmarshal(JSONDir string) (*map[string]string, error) {
 	}
 
 	// Unmarshal the content of the json file.
-	var IDmap map[string]string
+	var IDmap map[string] listdesignation.ListDesignation
 
 	if err = json.Unmarshal(b, &IDmap); err != nil {
 		return nil, fmt.Errorf("error unmarshaling the json file: %v", err)
@@ -25,7 +26,7 @@ func unmarshal(JSONDir string) (*map[string]string, error) {
 }
 
 // marshals the id map.
-func marshal(IDmap *map[string]string) (*[]byte, error) {
+func marshal(IDmap *map[string] listdesignation.ListDesignation) (*[]byte, error) {
 
 	b, err := json.Marshal(*IDmap)
 	if err != nil {
@@ -41,13 +42,4 @@ func editJSON(JSONDir string, content *[]byte) error {
 		return fmt.Errorf("error writing into the json file: %v", err)
 	}
 	return nil
-}
-
-// Gets the list map from the JSON storage file.
-func getListMap(JSONDir string) (*map[string]string, error) {
-	IDmap, err := unmarshal(JSONDir) 
-	if err != nil {
-		return nil, err 
-	}
-	return IDmap, nil
 }
