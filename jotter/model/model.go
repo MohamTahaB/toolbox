@@ -60,7 +60,24 @@ func InitiateModel() (*Model, error) {
 
 	m.List.Title = "Jotter"
 	m.CurrentFile.InitiateFile()
+	m.InitiateForm()
 
 	return &m, nil
 
+}
+
+// Initiates the form in the model, and links its inputs to the model's current file.
+func (m *Model) InitiateForm() {
+	m.Form = *huh.NewForm(
+		huh.NewGroup(
+			huh.NewInput().
+			Title("What is the title gonna be ?").
+			Prompt(">>>").
+			Value(&m.CurrentFile.Title),
+
+			huh.NewText().
+			Title("Let your fingertips go wild !").
+			Value(&m.CurrentFile.Content),
+		),
+	)
 }
