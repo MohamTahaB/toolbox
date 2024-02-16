@@ -5,7 +5,7 @@ run-name: Run Golangcli-lint
 on:
     push:
         branches:
-            - main 
+            - main
     pull_request:
         branches:
             - "*"
@@ -30,4 +30,7 @@ jobs:
               if: success()
 
             - name: Run golangci-lint
-              run: golangci-lint run ./...
+              run: |
+                  echo "Running golangci-lint..."
+                  lint_result=$(golangci-lint run ./...)
+                  echo "$lint_result"
