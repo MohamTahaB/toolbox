@@ -4,10 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	filelist "toolbox/jotter/storage/fileList"
 )
 
 // unmarshals the json file into a map of key = id, and value = name.
-func unmarshal(JSONDir string) (*map[string]string, error) {
+func Unmarshal(JSONDir string) (*map[string]filelist.FileDesignation, error) {
 	// Read the json file.
 	b, err := os.ReadFile(JSONDir)
 	if err != nil {
@@ -15,7 +16,7 @@ func unmarshal(JSONDir string) (*map[string]string, error) {
 	}
 
 	// Unmarshal the content of the json file.
-	var IDmap map[string]string
+	var IDmap map[string]filelist.FileDesignation
 
 	if err = json.Unmarshal(b, &IDmap); err != nil {
 		return nil, fmt.Errorf("error unmarshaling the json file: %v", err)
@@ -25,7 +26,7 @@ func unmarshal(JSONDir string) (*map[string]string, error) {
 }
 
 // marshals the id map.
-func marshal(IDmap *map[string]string) (*[]byte, error) {
+func Marshal(IDmap *map[string]filelist.FileDesignation) (*[]byte, error) {
 
 	b, err := json.Marshal(*IDmap)
 	if err != nil {
@@ -36,9 +37,22 @@ func marshal(IDmap *map[string]string) (*[]byte, error) {
 }
 
 // Overwrites the content of the json file with the byte slice passed as a parameter.
-func editJSON(JSONDir string, content *[]byte) error {
+func EditJSON(JSONDir string, content *[]byte) error {
 	if err := os.WriteFile(JSONDir, *content, 0755); err != nil {
 		return fmt.Errorf("error writing into the json file: %v", err)
 	}
+	return nil
+}
+
+func PushJSON(JSONDir string, IDmap *map[string]filelist.FileDesignation) error {
+	b, err := Marshal(IDmap)
+	if err != nil {
+		return err
+	}
+
+	if err = os.WriteFile(JSONDir, *b, 0755); err != nil {
+		return fmt.Errorf("error writing into the json file: %v", err)
+	}
+
 	return nil
 }
