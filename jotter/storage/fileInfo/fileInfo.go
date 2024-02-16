@@ -18,3 +18,8 @@ func (fi *FileInfo) GetContent() string {
 	}
 	return fi.Content
 }
+
+func (fi *FileInfo) InitiateFile() {
+	fi.Title = ""
+	fi.Content = ""
+}
