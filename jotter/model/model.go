@@ -71,13 +71,13 @@ func (m *Model) InitiateForm() {
 	m.Form = *huh.NewForm(
 		huh.NewGroup(
 			huh.NewInput().
-			Title("What is the title gonna be ?").
-			Prompt(">>>").
-			Value(&m.CurrentFile.Title),
+				Title("What is the title gonna be ?").
+				Prompt(">>>").
+				Value(&m.CurrentFile.Title),
 
 			huh.NewText().
-			Title("Let your fingertips go wild !").
-			Value(&m.CurrentFile.Content),
+				Title("Let your fingertips go wild !").
+				Value(&m.CurrentFile.Content),
 		),
 	)
 }
