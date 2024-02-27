@@ -8,6 +8,7 @@ type KeyMap struct {
 	Quit   key.Binding
 	Enter  key.Binding
 	Create key.Binding
+	Help   key.Binding
 }
 
 var HelpKeyMap = KeyMap{
@@ -30,5 +31,9 @@ var HelpKeyMap = KeyMap{
 	Create: key.NewBinding(
 		key.WithKeys("n", "w"),
 		key.WithHelp("n | w", "Create new ..."),
+	),
+	Help: key.NewBinding(
+		key.WithKeys("?"),
+		key.WithHelp("?", "Toggle help"),
 	),
 }
