@@ -59,3 +59,15 @@ func (km *KeyMap) ReadFileListMode() {
 	(*km).Up.SetEnabled(false)
 	(*km).Down.SetEnabled(false)
 }
+
+func (km *KeyMap) WriteFileListMode() {
+	//TODO : check the update for the form.
+}
+
+func (km *KeyMap) ReadFileMode() {
+	//TODO : check the update for the viewport.
+}
+
+func (km *KeyMap) WriteFileMode() {
+	//TODO : To be precised later after settling on the solution of editiing the file : simple text area or form ?
+}
