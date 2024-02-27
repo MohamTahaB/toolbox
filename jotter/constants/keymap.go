@@ -37,3 +37,25 @@ var HelpKeyMap = KeyMap{
 		key.WithHelp("?", "Toggle help"),
 	),
 }
+
+// Resets the keymap to its default case, meaning that all key bindings will be enabled.
+// Should be called before any call of the state mode. Thus avoiding any issues with suddently dissappearing help key bindings when switching states.
+func (km *KeyMap) ResetToDefault() {
+	//TODO! check if it can be done in a better and tidyier way.
+	(*km).Up.SetEnabled(true)
+	(*km).Down.SetEnabled(true)
+	(*km).Quit.SetEnabled(true)
+	(*km).Enter.SetEnabled(true)
+	(*km).Create.SetEnabled(true)
+	(*km).Help.SetEnabled(true)
+}
+
+func (km *KeyMap) ReadFileListMode() {
+
+	// Reset to default before acting on the key bindings.
+	km.ResetToDefault()
+
+	// No need for the bindings, except for quitting, creating, help and entering, as the rest will be handled by the native update func of the list component.
+	(*km).Up.SetEnabled(false)
+	(*km).Down.SetEnabled(false)
+}
