@@ -50,6 +50,16 @@ func (km *KeyMap) ResetToDefault() {
 	(*km).Help.SetEnabled(true)
 }
 
+// Disables all the keymap bindings.
+func (km *KeyMap) DisableAll() {
+	(*km).Up.SetEnabled(false)
+	(*km).Down.SetEnabled(false)
+	(*km).Quit.SetEnabled(false)
+	(*km).Enter.SetEnabled(false)
+	(*km).Create.SetEnabled(false)
+	(*km).Help.SetEnabled(false)
+}
+
 func (km *KeyMap) ReadFileListMode() {
 
 	// Reset to default before acting on the key bindings.
@@ -65,9 +75,14 @@ func (km *KeyMap) WriteFileListMode() {
 }
 
 func (km *KeyMap) ReadFileMode() {
-	//TODO : check the update for the viewport.
+
+	// Needs quit and help only, the rest is in the viewport update.
+	km.DisableAll()
+	(*km).Help.SetEnabled(true)
+	(*km).Quit.SetEnabled(true)
 }
 
 func (km *KeyMap) WriteFileMode() {
-	//TODO : To be precised later after settling on the solution of editiing the file : simple text area or form ?
+	//In this case, we are going through huh, therefore, all the keymap should be disabled.
+	km.DisableAll()
 }

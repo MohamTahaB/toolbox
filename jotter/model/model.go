@@ -4,6 +4,7 @@ import (
 	"toolbox/jotter/storage"
 	fileinfo "toolbox/jotter/storage/fileInfo"
 
+	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/viewport"
 	"github.com/charmbracelet/huh"
@@ -25,6 +26,7 @@ type Model struct {
 	FileID      string
 	CurrentFile fileinfo.FileInfo
 	ViewPort    viewport.Model
+	Help        help.Model
 }
 
 // Initiates the app model.
@@ -57,6 +59,9 @@ func InitiateModel() (*Model, error) {
 		m.FileID = id
 		break
 	}
+
+	// Initiate help.
+	m.Help = help.New()
 
 	m.List.Title = "Jotter"
 	m.CurrentFile.InitiateFile()
