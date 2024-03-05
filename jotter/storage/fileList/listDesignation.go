@@ -5,6 +5,12 @@ type FileDesignation struct {
 	FileDesc  string `json:"description"`
 }
 
-func (i FileDesignation) Title() string       { return i.FileTitle }
-func (i FileDesignation) Description() string { return i.FileDesc }
-func (i FileDesignation) FilterValue() string { return i.FileTitle }
+type FileItem struct {
+	ID        string
+	FileTitle string
+	FileDesc  string
+}
+
+func (i FileItem) Title() string       { return i.FileTitle }
+func (i FileItem) Description() string { return i.FileDesc }
+func (i FileItem) FilterValue() string { return i.FileTitle }
