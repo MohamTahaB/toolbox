@@ -6,6 +6,7 @@ import (
 
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/huh"
 )
 
 func (m Model) Update(msg tea.Msg) (tea.Msg, tea.Cmd) {
@@ -68,24 +69,29 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 			(*m).ViewPort, *cmd = m.ViewPort.Update(*msg)
 		}
 
-	// Writing a new element in the file list.
-	case WriteFileList:
+	// Case when the file is being written.
+	case WriteFile:
 		switch {
 
-		// Quit the write file list mode.
+		// Quit:
 		case key.Matches(*msg, constants.HelpKeyMap.Quit):
-			m.State = ReadFileList
-		
-		// Toggle help.
-		case key.Matches(*msg, constants.HelpKeyMap.Help):
-			m.Help.ShowAll = !m.Help.ShowAll
-		
-		// TODO! check if a solution has been implemented to add new 	
-		case key.Matches(*msg, constants.HelpKeyMap.Enter):
-		}
+			(*m).State = ReadFileList
 
-	// Case when the file is being written.
-	case WriteFile :
-		// TODO! CHECK how to do it
+		// Default:
+		default:
+			var form tea.Model
+			form, *cmd = (*m).Form.Update(*msg)
+
+			if f, ok := form.(*huh.Form); ok {
+				(*m).Form = *f
+			}
+
+			//Check if the state of the form is complete:
+			if (*m).Form.State == huh.StateCompleted {
+				// TODO: write the current file. 
+				(*m).State = ReadFileList
+			}
+
+		}
 	}
 }

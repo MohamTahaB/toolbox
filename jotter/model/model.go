@@ -15,7 +15,6 @@ type state int
 
 const (
 	ReadFileList state = iota
-	WriteFileList
 	ReadFile
 	WriteFile
 )
