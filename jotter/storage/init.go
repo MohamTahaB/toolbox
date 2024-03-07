@@ -43,7 +43,7 @@ func InitiateStorage() (string, string, error) {
 }
 
 // Create creates a new .md file.
-func Create(name string) (string, error) {
+func Create(id string) (string, error) {
 
 	// Check if the storage is properly initiated.
 	_, dir, err := InitiateStorage()
@@ -51,7 +51,7 @@ func Create(name string) (string, error) {
 		return "", err
 	}
 
-	dir = filepath.Join(dir, fmt.Sprintf("%s.md", name))
+	dir = filepath.Join(dir, fmt.Sprintf("%s.md", id))
 
 	// Create the .md file.
 	if _, err = os.Create(dir); err != nil {
@@ -62,7 +62,7 @@ func Create(name string) (string, error) {
 }
 
 // Pull pulls the content of a .md file name passed as a parameter.
-func Pull(name string) (string, error) {
+func Pull(id string) (string, error) {
 
 	// Check if the storage is properly initiated.
 	_, dir, err := InitiateStorage()
@@ -70,7 +70,7 @@ func Pull(name string) (string, error) {
 		return "", err
 	}
 
-	dir = filepath.Join(dir, fmt.Sprintf("%s.md", name))
+	dir = filepath.Join(dir, fmt.Sprintf("%s.md", id))
 
 	// Open the file.
 	b, err := os.ReadFile(dir)
@@ -82,7 +82,7 @@ func Pull(name string) (string, error) {
 }
 
 // Push overwrites the designated file with the content passed as parameter.
-func Push(name, content string) error {
+func Push(id, content string) error {
 
 	// Check if the storage is properly initiated.
 	_, dir, err := InitiateStorage()
@@ -90,7 +90,7 @@ func Push(name, content string) error {
 		return err
 	}
 
-	dir = filepath.Join(dir, fmt.Sprintf("%s.md", name))
+	dir = filepath.Join(dir, fmt.Sprintf("%s.md", id))
 
 	if err = os.WriteFile(dir, []byte(content), 0755); err != nil {
 		return fmt.Errorf("error pushing to the file: %v", err)

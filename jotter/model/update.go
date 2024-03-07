@@ -2,6 +2,8 @@ package model
 
 import (
 	"toolbox/jotter/constants"
+	"toolbox/jotter/storage"
+	fileinfo "toolbox/jotter/storage/fileInfo"
 	filelist "toolbox/jotter/storage/fileList"
 
 	"github.com/charmbracelet/bubbles/key"
@@ -23,10 +25,19 @@ func (m Model) Update(msg tea.Msg) (tea.Msg, tea.Cmd) {
 	}
 
 	// Handle the keymap mode.
+	switch m.State {
+	case ReadFile:
+		constants.HelpKeyMap.ReadFileMode()
+	case WriteFile:
+		constants.HelpKeyMap.WriteFileMode()
+	case ReadFileList:
+		constants.HelpKeyMap.ReadFileListMode()
+	}
 
-	return nil, nil
+	return m, cmd
 }
 
+// Handles the key messages, according to the state of the model.
 func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 	switch m.State {
 
@@ -41,6 +52,20 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 		case key.Matches(*msg, constants.HelpKeyMap.Enter):
 			m.State = ReadFile
 			m.FileID = m.List.SelectedItem().(filelist.FileItem).ID
+			m.CurrentFile.ID = m.FileID
+			m.CurrentFile.Title = m.List.SelectedItem().(filelist.FileItem).FileTitle
+
+			var err error
+			if m.CurrentFile.Content, err = storage.Pull(m.CurrentFile.ID); err != nil {
+				m.CurrentFile.Content = "error reading the file"
+			}
+
+		// Create a new list item.
+		case key.Matches(*msg, constants.HelpKeyMap.Create):
+
+			// Create a new id and build the file struct.
+			m.CurrentFile = *fileinfo.NewFile()
+			m.State = WriteFile
 
 		// Toggle help.
 		case key.Matches(*msg, constants.HelpKeyMap.Help):
@@ -77,6 +102,15 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 		case key.Matches(*msg, constants.HelpKeyMap.Quit):
 			(*m).State = ReadFileList
 
+		// Enter: add the file to the list.
+		case key.Matches(*msg, constants.HelpKeyMap.Enter):
+			(*m).State = ReadFileList
+			(*m).List.InsertItem(0, filelist.FileItem{
+				ID:        m.CurrentFile.ID,
+				FileTitle: m.CurrentFile.Title,
+				// TODO! add the description to the current file.
+			})
+
 		// Default:
 		default:
 			var form tea.Model
@@ -88,7 +122,9 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 
 			//Check if the state of the form is complete:
 			if (*m).Form.State == huh.StateCompleted {
-				// TODO: write the current file. 
+				if err := storage.Push(m.CurrentFile.ID, m.CurrentFile.Content); err != nil {
+					m.CurrentFile.Content = "error writing the file"
+				}
 				(*m).State = ReadFileList
 			}
 
