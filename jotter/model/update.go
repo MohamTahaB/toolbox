@@ -2,6 +2,7 @@ package model
 
 import (
 	"toolbox/jotter/constants"
+	fileinfo "toolbox/jotter/storage/fileInfo"
 	filelist "toolbox/jotter/storage/fileList"
 
 	"github.com/charmbracelet/bubbles/key"
@@ -41,6 +42,13 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 		case key.Matches(*msg, constants.HelpKeyMap.Enter):
 			m.State = ReadFile
 			m.FileID = m.List.SelectedItem().(filelist.FileItem).ID
+
+		// Create a new list item.
+		case key.Matches(*msg, constants.HelpKeyMap.Create):
+
+			// Create a new id and build the file struct.
+			m.CurrentFile = *fileinfo.NewFile()
+			m.State = WriteFile
 
 		// Toggle help.
 		case key.Matches(*msg, constants.HelpKeyMap.Help):
@@ -88,7 +96,7 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 
 			//Check if the state of the form is complete:
 			if (*m).Form.State == huh.StateCompleted {
-				// TODO: write the current file. 
+				// TODO: write the current file.
 				(*m).State = ReadFileList
 			}
 
