@@ -3,6 +3,7 @@ package model
 import (
 	"toolbox/jotter/storage"
 	fileinfo "toolbox/jotter/storage/fileInfo"
+	filelist "toolbox/jotter/storage/fileList"
 
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/list"
@@ -14,7 +15,6 @@ type state int
 
 const (
 	ReadFileList state = iota
-	WriteFileList
 	ReadFile
 	WriteFile
 )
@@ -47,8 +47,12 @@ func InitiateModel() (*Model, error) {
 
 	// Build list items slice.
 	var filesSlice []list.Item
-	for _, file := range *fileMap {
-		filesSlice = append(filesSlice, file)
+	for id, file := range *fileMap {
+		filesSlice = append(filesSlice, filelist.FileItem{
+			ID: id,
+			FileTitle: file.FileTitle,
+			FileDesc: file.FileDesc,
+		})
 	}
 
 	// Initiate the list and the file edit.
