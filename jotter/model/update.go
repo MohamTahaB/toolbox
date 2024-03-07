@@ -80,8 +80,12 @@ func handleKeyMsg(m *Model, msg *tea.KeyMsg, cmd *tea.Cmd) {
 		case key.Matches(*msg, constants.HelpKeyMap.Help):
 			m.Help.ShowAll = !m.Help.ShowAll
 		
-		// TODO! CHECK HOW TO DO IT
+		// TODO! check if a solution has been implemented to add new 	
 		case key.Matches(*msg, constants.HelpKeyMap.Enter):
 		}
+
+	// Case when the file is being written.
+	case WriteFile :
+		// TODO! CHECK how to do it
 	}
 }
