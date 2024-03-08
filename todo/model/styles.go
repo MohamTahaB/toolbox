@@ -13,4 +13,4 @@ var StrikeThroughStyle = lipgloss.NewStyle().
 	Faint(true)
 
 var FaintStyle = lipgloss.NewStyle().
-				 Faint(true)
+	Faint(true)
