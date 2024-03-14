@@ -24,5 +24,5 @@ func (m Model) View() string {
 
 	fmt.Fprintf(&b, "%s \n", msg)
 
-	return ""
+	return b.String()
 }
