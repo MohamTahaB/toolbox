@@ -1,7 +1,9 @@
 package main
 
-import "todo"
+import (
+	"toolbox/jotter"
+)
 
 func main() {
-	todo.App()
+	jotter.App()
 }
