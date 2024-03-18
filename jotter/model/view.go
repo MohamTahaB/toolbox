@@ -13,6 +13,9 @@ func (m Model) View() string {
 	switch m.State {
 	case ReadFileList:
 		// Render the list of files.
+		if len(m.List.Items()) == 0 {
+			msg = "No files available for the moment"
+		}
 		msg = m.List.View()
 	case ReadFile:
 		// Render the file viewport.
