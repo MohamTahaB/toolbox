@@ -13,6 +13,4 @@ A simple todo app that enables the user to:
 Data is stored locally in a JSON file located in the following directory: ```root/.toolbox/.todo/storage.json``` where ```root ``` is the root directory.
 
 ## Jotter
-A diary app that enables the user to:
 
-- Write, edit and delete diaries.
