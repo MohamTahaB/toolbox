@@ -36,7 +36,12 @@ func InitiateStorage() (string, string, error) {
 	}
 
 	if err = os.MkdirAll(filepath.Dir(JSONDir), 0755); err != nil {
-		return "", "", fmt.Errorf("error creating JSON file: %v", err)
+		return "", "", fmt.Errorf("error creating JSON file directory : %v", err)
+	}
+
+	// Create the JSON file.
+	if _, JSONErr = os.Create(JSONDir); JSONErr != nil {
+		return "", "", fmt.Errorf("error creating JSON file: %v", JSONErr)
 	}
 
 	return JSONDir, dir, nil
