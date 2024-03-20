@@ -31,12 +31,9 @@ func InitiateStorage() (string, string, error) {
 	// TODO! for now, if one of the dirs do not exist, everything will be set anew. This should change to accomodate all possible edge cases.
 
 	// Create the dirs if one of them do not exist.
-	if err = os.MkdirAll(filepath.Dir(dir), 0755); err != nil {
+	// The mds dir is enough as it is the most ramified one.
+	if err = os.MkdirAll(filepath.Clean(dir), 0755); err != nil {
 		return "", "", fmt.Errorf("error creating .md directory: %v", err)
-	}
-
-	if err = os.MkdirAll(filepath.Dir(JSONDir), 0755); err != nil {
-		return "", "", fmt.Errorf("error creating JSON file directory : %v", err)
 	}
 
 	// Create the JSON file.
