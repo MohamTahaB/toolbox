@@ -1,10 +1,12 @@
 package storage
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"os/user"
 	"path/filepath"
+	filelist "toolbox/jotter/storage/fileList"
 )
 
 // InitiateStorage checks if the storage directory is available.
@@ -39,6 +41,17 @@ func InitiateStorage() (string, string, error) {
 	// Create the JSON file.
 	if _, JSONErr = os.Create(JSONDir); JSONErr != nil {
 		return "", "", fmt.Errorf("error creating JSON file: %v", JSONErr)
+	}
+
+	// Populate the json file for the first time.
+	var IDmap map[string]filelist.FileDesignation
+	b, err := json.Marshal(&IDmap)
+	if err != nil {
+		return "", "", fmt.Errorf("error initiating the JSON file: %v", err)
+	}
+
+	if err = os.WriteFile(JSONDir, b, 0755); err != nil {
+		return "", "", fmt.Errorf("error initiating the JSON file: %v", err)
 	}
 
 	return JSONDir, dir, nil
