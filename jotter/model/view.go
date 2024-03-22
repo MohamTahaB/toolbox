@@ -3,6 +3,7 @@ package model
 import (
 	"fmt"
 	"strings"
+	"toolbox/jotter/constants"
 )
 
 func (m Model) View() string {
@@ -27,6 +28,8 @@ func (m Model) View() string {
 	}
 
 	fmt.Fprintf(&b, "%s \n", msg)
+
+	fmt.Fprintf(&b, "%s", m.Help.View(constants.HelpKeyMap))
 
 	return b.String()
 }

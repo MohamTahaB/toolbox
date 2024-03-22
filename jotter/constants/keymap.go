@@ -86,3 +86,16 @@ func (km *KeyMap) WriteFileMode() {
 	//In this case, we are going through huh, therefore, all the keymap should be disabled.
 	km.DisableAll()
 }
+
+func (k KeyMap) ShortHelp() []key.Binding {
+	return []key.Binding{
+		k.Enter, k.Quit, k.Help,
+	}
+}
+
+func (k KeyMap) FullHelp() [][]key.Binding {
+	return [][]key.Binding{
+		{k.Up, k.Down, k.Enter},
+		{k.Create, k.Help, k.Quit},
+	}
+}
